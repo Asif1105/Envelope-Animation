@@ -1,0 +1,73 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <div class="envelope_wrapper">
+        <div class="envelope"></div>
+        <div class="flip"></div>
+        <div class="letter"></div>
+    </div>
+    <script>
+        let isOnGoing = false;
+        let flip = document.querySelector('.flip');
+        let letter = document.querySelector('.letter');
+        let envelope = document.querySelector('.envelope_wrapper');
+
+        function letterToggle() {
+            letter.classList.remove('letterClose');
+            letter.classList.add('letterOpen');
+        };
+
+        function flipToggle() {
+            flip.classList.remove('flipOpen');
+            flip.classList.add('flipClose');
+            flip.style.zIndex = 6;
+        }
+
+        function openEnvelope(e) {
+            e.stopPropagation();
+            currentAnimation = 'open';
+            isOnGoing = true;
+            flip.classList.remove('flipClose');
+            flip.classList.add('flipOpen');
+            flip.style.zIndex = 4;
+            setTimeout(letterToggle, 700);
+        }
+
+        function closeEnvelope(e) {
+            e.stopPropagation();
+            currentAnimation = 'close';
+            isOnGoing = true;
+            letter.classList.remove('letterOpen');
+            letter.classList.add('letterClose');
+            setTimeout(flipToggle, 700);
+        }
+
+        envelope.addEventListener('click', function(e) {
+            if (!isOnGoing) {
+                if (flip.classList.contains('flipOpen')) {
+                    closeEnvelope(e);
+                } else {
+                    openEnvelope(e);
+                }
+            }
+        });
+
+        letter.addEventListener('animationend', function(e) {
+            if (currentAnimation === 'open') {
+                isOnGoing = false;
+            }
+        });
+
+        flip.addEventListener('animationend', function(e) {
+            if (currentAnimation === 'close') {
+                isOnGoing = false;
+            }
+        });
+    </script>
+</body>
+
+</html>
